@@ -298,17 +298,6 @@ export function Hero() {
       <div className="relative max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-center">
         {/* Left Column: Narrative & Live Trust Metrics */}
         <div className="lg:col-span-6 space-y-7 md:space-y-8">
-          {/* Live System Beacon */}
-          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/90 border border-sand-300 shadow-subtle backdrop-blur-sm">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
-            </span>
-            <span className="text-[10px] sm:text-xs font-sans font-medium text-charcoal-800 tracking-wide">
-              Active Placement Network • 24+ Major U.S. Hubs
-            </span>
-          </div>
-
           <div className="space-y-4">
             <h1 className="font-headline text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-medium tracking-tight text-charcoal-900 leading-[1.04]">
               Curated Living Across the United States.
