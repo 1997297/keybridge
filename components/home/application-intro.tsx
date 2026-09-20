@@ -464,7 +464,7 @@ export function ApplicationIntro() {
           </h2>
 
           <p className="font-sans text-sm sm:text-base text-taupe-600 leading-relaxed">
-            Complete the form below to begin review with your assigned agent. Make sure you have completed an initial property tour. The $75 application fee is required after submission to start underwriting.
+            Complete the form below to begin review with your assigned agent after selecting your preferred apartment. The $75 application fee is required after submission to start underwriting.
           </p>
         </div>
 

@@ -21,7 +21,7 @@ const steps: StepItem[] = [
   {
     number: "01",
     title: "Connect With Agent",
-    description: "Meet your assigned Keybridge agent and tour eligible properties that match your budget.",
+    description: "Connect with your assigned Keybridge agent and view eligible properties that match your budget.",
     icon: UserCheck,
   },
   {
@@ -46,14 +46,14 @@ const steps: StepItem[] = [
   {
     number: "05",
     title: "Pay Rent",
-    description: "Once approved, pay your first month rent before official lease documents are issued.",
+    description: "Once approved, pay rent for your chosen months ahead before documents and keys are released.",
     icon: Banknote,
     accent: "bronze",
   },
   {
     number: "06",
-    title: "Sign & Collect Keys",
-    description: "Sign your finalized lease agreement and receive keys for your new apartment.",
+    title: "Receive Documents & Keys",
+    description: "Sign your finalized lease agreement and receive your documents and keys.",
     icon: Key,
     accent: "olive",
   },
@@ -83,7 +83,7 @@ export function HowItWorks() {
           </h2>
 
           <p className="font-sans text-sm sm:text-base text-taupe-600 leading-relaxed">
-            From your first tour to picking up your keys, here is how each step works.
+            From viewing eligible properties to picking up your keys, here is how each step works.
           </p>
         </div>
 
