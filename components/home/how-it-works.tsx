@@ -33,7 +33,7 @@ const steps: StepItem[] = [
   {
     number: "03",
     title: "Pay $75 Fee",
-    description: "Pay the standard $75 fee so our underwriting team can begin processing your file.",
+    description: "Pay the standard $75 fee so our team can begin processing your application.",
     icon: CreditCard,
     accent: "bronze",
   },

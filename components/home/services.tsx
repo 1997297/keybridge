@@ -88,13 +88,13 @@ export function Services() {
                   <span className="w-4 h-4 rounded bg-sand-100 flex items-center justify-center mt-0.5 flex-shrink-0 text-bronze-600">
                     <Check className="w-3 h-3" />
                   </span>
-                  <span>Assigned agent manages showings and walks you through the lease</span>
+                  <span>Assigned agent presents options and walks you through the lease</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="w-4 h-4 rounded bg-sand-100 flex items-center justify-center mt-0.5 flex-shrink-0 text-bronze-600">
                     <Check className="w-3 h-3" />
                   </span>
-                  <span>Direct background, income, and rental history verification</span>
+                  <span>Direct income and rental history verification</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="w-4 h-4 rounded bg-sand-100 flex items-center justify-center mt-0.5 flex-shrink-0 text-bronze-600">

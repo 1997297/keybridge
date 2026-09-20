@@ -114,7 +114,7 @@ const HERO_PROPERTIES: HeroProperty[] = [
     cornerCard: {
       status: "Application Pending",
       name: "Greene Street Duplex Loft",
-      note: "Underwriting review in progress",
+      note: "Application review in progress",
       dotColor: "bg-amber-600",
       icon: Clock,
       iconStyle: "bg-amber-100 border-amber-200 text-amber-700",
@@ -202,9 +202,9 @@ const HERO_PROPERTIES: HeroProperty[] = [
     typeLabel: "Full-Floor Flat",
     price: "$9,800 / mo",
     cornerCard: {
-      status: "Underwriting Cleared",
+      status: "Application Approved",
       name: "Broadway St Panoramic Suite",
-      note: "Tenant background verified",
+      note: "Tenant application verified",
       dotColor: "bg-emerald-500",
       icon: ShieldCheck,
       iconStyle: "bg-emerald-100 border-emerald-200 text-emerald-700",
@@ -219,7 +219,7 @@ const HERO_PROPERTIES: HeroProperty[] = [
     cornerCard: {
       status: "Just Listed • Exclusive",
       name: "Columbine Sky Atelier",
-      note: "First private showing today",
+      note: "Now available for placement",
       dotColor: "bg-bronze-600",
       icon: Sparkles,
       iconStyle: "bg-bronze-100 border-bronze-200 text-bronze-700",
@@ -245,7 +245,7 @@ const BOTTOM_RIGHT_SNIPPETS: BottomRightSnippet[] = [
     dotColor: "bg-taupe-600",
   },
   {
-    tag: "Underwriting Trust",
+    tag: "Placement Trust",
     title: "850+ Vetted Tenancies",
     detail: "Direct landlord representation",
     icon: ShieldCheck,

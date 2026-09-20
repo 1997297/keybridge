@@ -245,7 +245,7 @@ Keybridge Residential Placement Services | Direct Representative File Record
 
         <!-- Section 4: Applicant Details -->
         <div class="section-card">
-          <div class="section-header">04 — Applicant Screening & Preferences</div>
+          <div class="section-header">04 — Applicant Details & Preferences</div>
           <div class="section-body">
             <table>
               <tr class="data-row">
@@ -334,9 +334,9 @@ Target Move-in Date:  ${data.preferredMoveInDate}
 Submission Date:      ${timestamp}
 
 --------------------------------------------------------------------------------
-IMPORTANT NEXT STEP — $75 APPLICATION FEE
+IMPORTANT NEXT STEP: $75 APPLICATION FEE
 --------------------------------------------------------------------------------
-Please note that all Keybridge applications require a mandatory $75 application fee to cover preliminary background verification and agent underwriting.
+Please note that all Keybridge applications require a standard $75 application fee to cover preliminary file review and application processing.
 
 CRITICAL NOTICE:
 Applications are ONLY reviewed, evaluated, and acted upon after the required $75 application fee has been received and confirmed. Submission of this form does NOT guarantee lease approval.
@@ -432,9 +432,9 @@ streak.crm.hr@gmail.com
 
         <!-- Mandatory Fee Notice -->
         <div class="callout-fee">
-          <div class="callout-title">Required Next Step — $75 Application Fee</div>
+          <div class="callout-title">Required Next Step: $75 Application Fee</div>
           <p class="callout-body">
-            A mandatory <strong>$75 application fee</strong> is required for underwriting verification and background screening. Applications are <strong>only reviewed and acted upon after the required application fee has been confirmed</strong>.
+            A standard <strong>$75 application fee</strong> is required for file review and application processing. Applications are <strong>only reviewed and acted upon after the required application fee has been confirmed</strong>.
           </p>
         </div>
 
@@ -445,7 +445,7 @@ streak.crm.hr@gmail.com
         <!-- Disclaimer / Approval Warning -->
         <div class="disclaimer-box">
           <strong>Notice Regarding Tenancy Decisions:</strong><br />
-          Submission of an application does not guarantee lease approval or property reservation. All applications are objectively reviewed against formal agency underwriting criteria following fee confirmation.
+          Submission of an application does not guarantee lease approval or property reservation. All applications are reviewed against standard leasing criteria following fee confirmation.
         </div>
 
         <p style="margin-top: 24px; font-size: 13px; color: #7F7769;">

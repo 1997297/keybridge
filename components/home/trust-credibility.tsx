@@ -55,7 +55,7 @@ export function TrustCredibility() {
           </div>
 
           <p className="font-sans text-xs sm:text-sm text-taupe-400 max-w-md leading-relaxed">
-            Keybridge provides personal, agent-guided rental placement. We focus on straightforward underwriting, verified listings, and responsive communication.
+            Keybridge provides personal, agent-guided rental placement. We focus on clear leasing terms, verified listings, and responsive communication.
           </p>
         </div>
 

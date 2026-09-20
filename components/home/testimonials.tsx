@@ -43,7 +43,7 @@ export const TESTIMONIALS: TestimonialItem[] = [
     propertyType: "Modern Downtown Condominium",
     tenancyType: "Long-Term Rental",
     quote:
-      "Straightforward underwriting with realistic timelines. Once the initial showing and fee were completed, Keybridge kept us informed until our lease agreement was ready to sign.",
+      "Straightforward process with realistic timelines. Once the viewing and fee were completed, Keybridge kept us informed until our lease agreement was ready to sign.",
     timeline: "Placed in 5 business days",
     agentRef: "Assisted by Texas Leasing Group",
   },
