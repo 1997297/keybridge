@@ -254,7 +254,7 @@ export function ApplicationIntro() {
       newErrors.agentCode = "Please select your assigned agent.";
     }
     if (!formData.propertyType) {
-      newErrors.propertyType = "Please select a prospective property typology.";
+      newErrors.propertyType = "Please select a prospective property type.";
     }
 
     // SECTION 1: Applicant Information
@@ -383,25 +383,61 @@ export function ApplicationIntro() {
     setIsSubmitting(true);
 
     try {
-      // Simulate network latency
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      const genRef = `KB-${new Date().getFullYear()}-${Math.floor(
-        100000 + Math.random() * 900000
-      )}`;
-      setReferenceId(genRef);
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        if (result.errors && typeof result.errors === "object") {
+          setErrors(result.errors);
+          const count = Object.keys(result.errors).length;
+          setErrorMessage(
+            result.message ||
+              `The server identified ${count} issue${count > 1 ? "s" : ""} with your application. Please review the highlighted fields above.`
+          );
+
+          // Scroll smoothly to first server-reported error
+          const firstErrKey = Object.keys(result.errors)[0];
+          if (typeof window !== "undefined") {
+            const el =
+              document.getElementById(firstErrKey) ||
+              document.getElementById(`${firstErrKey}-group`) ||
+              document.querySelector(`[name="${firstErrKey}"]`);
+            if (el) {
+              el.scrollIntoView({ behavior: "smooth", block: "center" });
+              if ("focus" in el && typeof (el as HTMLElement).focus === "function") {
+                (el as HTMLElement).focus();
+              }
+            }
+          }
+        } else {
+          setErrorMessage(
+            result.message || "Failed to submit your application. Please try again."
+          );
+        }
+        return;
+      }
+
+      const returnedRef = result.referenceId;
+      setReferenceId(returnedRef);
       setIsSubmitted(true);
 
       // Mandated by user: log full form payload to console
       console.log("Official Keybridge Application Payload:", {
-        referenceId: genRef,
+        referenceId: returnedRef,
         submittedAt: new Date().toISOString(),
         ...formData,
       });
     } catch (err) {
-      console.error("Application submission failed:", err);
+      console.error("Application submission network error:", err);
       setErrorMessage(
-        "An unexpected error occurred while processing your application. Please check your connection and try again."
+        "A network communication error occurred while processing your application. Please check your connection and try again."
       );
     } finally {
       setIsSubmitting(false);
@@ -411,72 +447,46 @@ export function ApplicationIntro() {
   return (
     <section
       id="application"
-      className="py-20 md:py-28 bg-sand-50/60 border-b border-sand-300/80 relative overflow-hidden"
+      className="py-12 md:py-16 bg-sand-50/60 border-b border-sand-300/80 relative overflow-hidden"
     >
-      <div className="max-w-5xl mx-auto px-6 relative space-y-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative space-y-8">
         {/* Section Header */}
-        <div className="max-w-3xl space-y-4">
+        <div className="max-w-3xl space-y-3">
           <div className="flex items-center gap-2">
-            <Badge variant="bronze">$75 Application Fee Required</Badge>
-            <span className="text-xs font-sans tracking-architectural uppercase text-taupe-500">
-              Official Placement Filing
+            <Badge variant="bronze">Rental Application</Badge>
+            <span className="text-xs font-sans tracking-architectural uppercase text-taupe-500 font-medium">
+              Direct Filing
             </span>
           </div>
 
-          <h2 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-charcoal-900 leading-tight">
-            Initiate Your Residential Application.
+          <h2 className="font-headline text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-charcoal-900 leading-tight">
+            Submit Your Application
           </h2>
 
-          <p className="font-sans text-base sm:text-lg text-taupe-600 leading-relaxed">
-            Before applying, ensure you have communicated with an assigned Keybridge representative and completed an initial showing of the prospective rental.
+          <p className="font-sans text-sm sm:text-base text-taupe-600 leading-relaxed">
+            Complete the form below to begin review with your assigned agent. Make sure you have completed an initial property tour. The $75 application fee is required after submission to start underwriting.
           </p>
-
-          {/* Payment Note Callout */}
-          <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200/90 flex items-start gap-3 text-xs sm:text-sm text-amber-950">
-            <AlertCircle className="w-4 h-4 text-amber-700 mt-0.5 flex-shrink-0" />
-            <p className="leading-relaxed">
-              <span className="font-semibold">Important Payment Note:</span> The $75 application fee is only the first payment step — rent payment follows separately once the application is approved, prior to documentation finalization and apartment release.
-            </p>
-          </div>
         </div>
 
-        {/* Compact Two-Phase Payment Sequence Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-3xl bg-white border border-sand-300 shadow-subtle flex items-start gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-bronze-50 border border-bronze-200 flex items-center justify-center text-bronze-700 flex-shrink-0">
-              <CreditCard className="w-5 h-5" />
+        {/* Compact Two-Step Summary */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="p-3.5 rounded-xl bg-white border border-sand-300 shadow-subtle flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-bronze-50 border border-bronze-200 flex items-center justify-center text-bronze-700 flex-shrink-0">
+              <CreditCard className="w-4 h-4" />
             </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-bronze-600 font-semibold">
-                  Phase 1 • Initial
-                </span>
-                <span className="text-xs font-headline font-semibold text-charcoal-900">
-                  $75 Application Fee
-                </span>
-              </div>
-              <p className="text-xs text-taupe-600 leading-relaxed">
-                Processed upon submission to initiate underwriter review and identity verification.
-              </p>
+            <div>
+              <span className="block text-xs font-semibold text-charcoal-900">Step 1: Application + $75 Fee</span>
+              <span className="block text-[11px] text-taupe-500">Starts underwriting and background verification.</span>
             </div>
           </div>
 
-          <div className="p-5 rounded-3xl bg-white border border-sand-300 shadow-subtle flex items-start gap-4">
-            <div className="w-10 h-10 rounded-2xl bg-olive-50 border border-olive-200 flex items-center justify-center text-olive-700 flex-shrink-0">
-              <Banknote className="w-5 h-5" />
+          <div className="p-3.5 rounded-xl bg-white border border-sand-300 shadow-subtle flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-olive-50 border border-olive-200 flex items-center justify-center text-olive-700 flex-shrink-0">
+              <Banknote className="w-4 h-4" />
             </div>
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-olive-700 font-semibold">
-                  Phase 2 • Post-Approval
-                </span>
-                <span className="text-xs font-headline font-semibold text-charcoal-900">
-                  First Month&apos;s Rent
-                </span>
-              </div>
-              <p className="text-xs text-taupe-600 leading-relaxed">
-                Remitted only following official approval notice, directly preceding lease signing & key release.
-              </p>
+            <div>
+              <span className="block text-xs font-semibold text-charcoal-900">Step 2: Approved Rent Payment</span>
+              <span className="block text-[11px] text-taupe-500">Paid after approval to issue your lease and keys.</span>
             </div>
           </div>
         </div>
@@ -533,7 +543,7 @@ export function ApplicationIntro() {
                       </span>
                     </div>
                     <h4 className="font-headline text-xl sm:text-2xl font-semibold text-charcoal-900">
-                      Next Step — Application Fee
+                      Next Step: Application Fee
                     </h4>
                     <p className="font-sans text-sm sm:text-base text-charcoal-800 leading-relaxed">
                       The required $75 application fee must be completed before your application can be reviewed and processed.
@@ -641,7 +651,7 @@ export function ApplicationIntro() {
                     Application Details
                   </h4>
                   <p className="text-xs font-sans text-taupe-500">
-                    Assign your file to your viewing representative and select your prospective property typology.
+                    Select your assigned agent and desired property type.
                   </p>
                 </div>
               </div>
@@ -700,7 +710,7 @@ export function ApplicationIntro() {
                       className={getSelectClasses(Boolean(errors.propertyType))}
                     >
                       <option value="" disabled>
-                        Select property typology...
+                        Select property type...
                       </option>
                       <option value="Apartment">Apartment</option>
                       <option value="Studio">Studio</option>
@@ -714,7 +724,7 @@ export function ApplicationIntro() {
                   </div>
                   {renderFieldError("propertyType")}
                   <p className="text-[11px] font-sans text-taupe-500 leading-snug">
-                    The residential category corresponding to your prospective unit.
+                    The type of property you are applying for.
                   </p>
                 </div>
 
@@ -1400,7 +1410,7 @@ export function ApplicationIntro() {
                     </span>
                   </div>
                   <h5 className="font-headline text-xl sm:text-2xl font-semibold tracking-tight text-charcoal-900">
-                    APPLICATION FEE — $75
+                    APPLICATION FEE: $75
                   </h5>
                   <p className="text-xs sm:text-sm font-sans text-charcoal-800 leading-relaxed max-w-xl">
                     A $75 application fee is required after submission. Applications will not be reviewed or acted upon until the required application fee has been received.

@@ -77,32 +77,32 @@ const typologies: TypologyItem[] = [
 
 export function PropertyShowcase() {
   return (
-    <section id="showcase" className="py-20 md:py-32 bg-ivory-50/60 border-b border-sand-300/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-16">
-        {/* Editorial Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-sand-300 pb-8">
-          <div className="max-w-2xl space-y-4">
+    <section id="showcase" className="py-12 md:py-16 bg-ivory-50/60 border-b border-sand-300/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-10">
+        {/* Clean Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-sand-300 pb-6">
+          <div className="max-w-2xl space-y-3">
             <div className="flex items-center gap-2">
-              <Badge variant="bronze">Representative Typologies</Badge>
-              <span className="text-xs font-sans tracking-architectural uppercase text-taupe-500">
-                Editorial Showcase
+              <Badge variant="bronze">Property Types</Badge>
+              <span className="text-xs font-sans tracking-architectural uppercase text-taupe-500 font-medium">
+                Showcase
               </span>
             </div>
 
-            <h2 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-charcoal-900 leading-tight">
-              Curated Residential Typologies.
+            <h2 className="font-headline text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-charcoal-900 leading-tight">
+              Featured Property Styles
             </h2>
 
-            <p className="font-sans text-base sm:text-lg text-taupe-700 leading-relaxed">
-              A visual monograph of residential archetypes represented across our nationwide placement portfolio. From historic brownstones to light-filled lofts, each residence reflects uncompromised architectural integrity.
+            <p className="font-sans text-sm sm:text-base text-taupe-700 leading-relaxed">
+              Explore common apartment and home layouts available through Keybridge leasing agents across the country.
             </p>
           </div>
 
-          <div className="text-xs font-sans text-taupe-500 max-w-xs space-y-1 md:text-right border-l-2 md:border-l-0 md:border-r-2 border-bronze-600 pl-3 md:pl-0 md:pr-3">
-            <div className="uppercase tracking-architectural font-medium text-charcoal-800 text-[11px]">
-              Curatorial Index
+          <div className="text-xs font-sans text-taupe-500 max-w-xs space-y-0.5 md:text-right border-l-2 md:border-l-0 md:border-r-2 border-bronze-600 pl-3 md:pl-0 md:pr-3">
+            <div className="uppercase tracking-architectural font-semibold text-charcoal-900 text-[11px]">
+              Available Layouts
             </div>
-            <div>Six architectural forms placed across premier U.S. metropolitan regions.</div>
+            <div>Six typical rental configurations across major cities.</div>
           </div>
         </div>
 
@@ -177,7 +177,7 @@ export function PropertyShowcase() {
             <span className="w-2.5 h-2.5 rounded-full bg-bronze-600 flex-shrink-0" />
             <span>
               <strong className="text-charcoal-900 font-medium">Private Placement Representation: </strong>
-              Keybridge facilitates residences across these typologies through direct landlord representation rather than public broker feeds.
+              Keybridge coordinates residences across these categories through direct property representation rather than public broker feeds.
             </span>
           </div>
           <span className="text-[11px] font-mono tracking-wider uppercase text-taupe-500 flex-shrink-0">

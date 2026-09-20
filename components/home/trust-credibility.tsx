@@ -35,27 +35,27 @@ const STATS: CredibilityStat[] = [
 
 export function TrustCredibility() {
   return (
-    <section className="py-16 md:py-24 bg-charcoal-900 text-ivory-100 relative overflow-hidden border-y border-charcoal-800">
-      {/* Architectural subtle background grid pattern */}
+    <section className="py-12 md:py-16 bg-charcoal-900 text-ivory-100 relative overflow-hidden border-y border-charcoal-800">
+      {/* Subtle background grid pattern */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[radial-gradient(#FFFFFF_1px,transparent_1px)] [background-size:24px_24px]" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative space-y-12">
-        {/* Understated Section Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative space-y-10">
+        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-charcoal-800">
-          <div className="space-y-3 max-w-2xl">
+          <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-bronze-500 animate-pulse" />
-              <span className="text-xs font-sans tracking-architectural uppercase text-bronze-400 font-medium">
-                Track Record & Integrity
+              <span className="text-xs font-sans tracking-architectural uppercase text-bronze-400 font-semibold">
+                Track Record
               </span>
             </div>
-            <h2 className="font-headline text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-white">
-              Grounded in Experience. Committed to Transparency.
+            <h2 className="font-headline text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white">
+              Experience You Can Count On
             </h2>
           </div>
 
           <p className="font-sans text-xs sm:text-sm text-taupe-400 max-w-md leading-relaxed">
-            Keybridge operates as an agent-assisted placement consultancy. We prioritize objective underwriting, verified property relationships, and transparent communication.
+            Keybridge provides personal, agent-guided rental placement. We focus on straightforward underwriting, verified listings, and responsive communication.
           </p>
         </div>
 

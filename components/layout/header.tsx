@@ -21,13 +21,13 @@ export function Header() {
           </div>
         </a>
 
-        {/* Minimal Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-sans tracking-architectural uppercase text-charcoal-800">
+        {/* Minimal Navigation: About, Services, Processes */}
+        <nav className="hidden md:flex items-center gap-8 text-xs font-sans tracking-architectural uppercase text-charcoal-800 font-medium">
           <a
             href="#about"
             className="hover:text-bronze-600 transition-colors duration-200"
           >
-            About Keybridge
+            About
           </a>
           <a
             href="#services"
@@ -36,22 +36,10 @@ export function Header() {
             Services
           </a>
           <a
-            href="#how-it-works"
+            href="#processes"
             className="hover:text-bronze-600 transition-colors duration-200"
           >
-            How It Works
-          </a>
-          <a
-            href="#showcase"
-            className="hover:text-bronze-600 transition-colors duration-200"
-          >
-            Showcase
-          </a>
-          <a
-            href="#testimonials"
-            className="hover:text-bronze-600 transition-colors duration-200"
-          >
-            Reviews
+            Processes
           </a>
         </nav>
 

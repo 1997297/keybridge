@@ -64,80 +64,56 @@ export function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="py-20 md:py-28 bg-ivory-100 border-b border-sand-300/80 relative overflow-hidden"
+      className="py-12 md:py-16 bg-ivory-100 border-b border-sand-300/80 relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 space-y-8">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="max-w-2xl space-y-4">
-            <div className="flex items-center gap-2">
-              <Badge variant="bronze">Tenant Experiences</Badge>
-              <span className="text-xs font-sans tracking-architectural uppercase text-taupe-500">
-                Verified Feedback
-              </span>
-            </div>
-
-            <h2 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-charcoal-900 leading-tight">
-              Real Experiences from Prospective Renters.
-            </h2>
-
-            <p className="font-sans text-base sm:text-lg text-taupe-600 leading-relaxed">
-              Every tenancy at Keybridge is an agent-guided transition. Here is what applicants and residents share regarding our communication, timeline clarity, and underwriting assistance.
-            </p>
+        <div className="max-w-3xl space-y-3">
+          <div className="flex items-center gap-2">
+            <Badge variant="bronze">Tenant Reviews</Badge>
+            <span className="text-xs font-sans tracking-architectural uppercase text-taupe-500 font-medium">
+              Verified Feedback
+            </span>
           </div>
 
+          <h2 className="font-headline text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-charcoal-900 leading-tight">
+            What Renters Say
+          </h2>
 
+          <p className="font-sans text-sm sm:text-base text-taupe-600 leading-relaxed">
+            Direct feedback from tenants placed into apartments and shortlets by Keybridge agents.
+          </p>
         </div>
 
-        {/* 4-Column Clean Responsive Card Grid with Rounded-3xl Corners */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        {/* Compact 4-Column Card Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
           {TESTIMONIALS.map((item) => (
             <div
               key={item.id}
-              className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-7 shadow-subtle hover:shadow-card transition-all duration-300 flex flex-col justify-between hover:-translate-y-1 relative group"
+              className="bg-white border border-sand-300 rounded-2xl p-5 shadow-subtle hover:shadow-card transition-all duration-200 flex flex-col justify-between hover:-translate-y-0.5 group"
             >
-              <div className="space-y-6">
-                {/* Card Top: Tenancy Badge & Quote Icon */}
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <Badge
                     variant={item.tenancyType === "Shortlet" ? "bronze" : "olive"}
-                    className="text-[10px] px-2.5 py-0.5"
+                    className="text-[9px] px-2 py-0.5"
                   >
                     {item.tenancyType}
                   </Badge>
-
-                  <div className="w-8 h-8 rounded-full bg-sand-100 flex items-center justify-center text-bronze-600 group-hover:bg-bronze-50 transition-colors">
-                    <Quote className="w-4 h-4" />
-                  </div>
+                  <Quote className="w-3.5 h-3.5 text-taupe-400" />
                 </div>
 
-                {/* Restrained Quote Copy */}
-                <p className="font-sans text-sm text-charcoal-800 leading-relaxed italic">
+                <p className="font-sans text-xs sm:text-sm text-charcoal-800 leading-relaxed italic">
                   “{item.quote}”
                 </p>
               </div>
 
-              {/* Card Bottom: Author, Location & Property Details */}
-              <div className="pt-6 mt-6 border-t border-sand-200/80 space-y-3">
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-headline text-base font-semibold text-charcoal-900">
-                      {item.name}
-                    </span>
-                    <span className="text-[11px] font-mono text-taupe-500 flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-taupe-400" />
-                      {item.location}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1.5 text-xs text-taupe-600">
-                    <Building className="w-3.5 h-3.5 text-bronze-600 flex-shrink-0" />
-                    <span className="truncate">{item.propertyType}</span>
-                  </div>
+              <div className="pt-3 mt-3 border-t border-sand-200 space-y-1">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-charcoal-900">{item.name}</span>
+                  <span className="font-mono text-[11px] text-taupe-500">{item.location}</span>
                 </div>
-
-                {/* Verification Badge Container */}
-                <div className="p-2.5 rounded-2xl bg-sand-50 border border-sand-200 text-[11px] font-mono text-taupe-600 flex items-center justify-between">
+                <div className="flex items-center justify-between text-[11px] text-taupe-500 font-mono">
                   <span>{item.timeline}</span>
                   <span className="text-olive-700 font-medium flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3 text-olive-600" />
@@ -147,13 +123,6 @@ export function Testimonials() {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom Editorial Callout */}
-        <div className="text-center pt-4">
-          <p className="font-mono text-xs text-taupe-500 tracking-wide">
-            Testimonials presented reflect standard representative client outcomes. Feedback records are archived under Keybridge customer care compliance.
-          </p>
         </div>
       </div>
     </section>
