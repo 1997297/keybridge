@@ -1449,10 +1449,6 @@ export function ApplicationIntro() {
                     A $75 application fee is required after submission. Applications will not be reviewed or acted upon until the required application fee has been received.
                   </p>
                 </div>
-                <div className="flex-shrink-0 bg-white px-4 py-2.5 rounded-xl border border-bronze-200 shadow-subtle text-right">
-                  <span className="block text-[10px] font-mono uppercase text-taupe-500 font-medium">Standard Filing</span>
-                  <span className="font-headline text-lg font-bold text-bronze-800">$75.00 USD</span>
-                </div>
               </div>
 
               {/* Section 5 Fields */}
