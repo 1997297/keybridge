@@ -18,6 +18,9 @@ import {
 } from "lucide-react";
 
 export interface ApplicationFormData {
+  // Bot trap (kept off-screen for real users)
+  companyWebsite: string;
+
   // SECTION 0: Application Details
   agentCode: string;
   propertyType: string;
@@ -112,6 +115,7 @@ export const US_STATES = [
 ];
 
 const initialFormData: ApplicationFormData = {
+  companyWebsite: "",
   agentCode: "",
   propertyType: "",
   otherPropertyType: "",
@@ -623,6 +627,22 @@ export function ApplicationIntro() {
               </div>
 
               <form onSubmit={handleSubmit} noValidate className="space-y-12">
+                <div
+                  aria-hidden="true"
+                  className="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 opacity-0 pointer-events-none [clip:rect(0,0,0,0)] [clip-path:inset(50%)]"
+                >
+                  <label htmlFor="companyWebsite">Company website</label>
+                  <input
+                    id="companyWebsite"
+                    name="companyWebsite"
+                    type="text"
+                    value={formData.companyWebsite}
+                    onChange={handleInputChange}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 {/* Pre-Selected Service Pathway Notification */}
                 {selectedService && (
                   <div className="p-4 rounded-2xl bg-bronze-50/90 border border-bronze-200/90 flex items-center justify-between gap-4 animate-smooth-fade shadow-subtle">
