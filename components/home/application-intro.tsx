@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -139,6 +139,7 @@ const initialFormData: ApplicationFormData = {
 };
 
 export function ApplicationIntro() {
+  const submissionFeedbackRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState<ApplicationFormData>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -176,6 +177,15 @@ export function ApplicationIntro() {
       window.removeEventListener("keybridge:service-select", handleCustomEvent);
     };
   }, []);
+
+  useLayoutEffect(() => {
+    if (isSubmitted) {
+      submissionFeedbackRef.current?.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+      });
+    }
+  }, [isSubmitted]);
 
   const getTodayDateString = () => {
     const today = new Date();
@@ -495,7 +505,10 @@ export function ApplicationIntro() {
         <div className="bg-white border border-sand-300 rounded-3xl p-6 sm:p-10 md:p-12 shadow-card space-y-12">
           {isSubmitted ? (
             /* SUCCESS CONFIRMATION STATE VIEW */
-            <div className="space-y-8 animate-fadeIn">
+            <div
+              ref={submissionFeedbackRef}
+              className="scroll-mt-24 space-y-8 animate-fadeIn"
+            >
               {/* Success Status Header */}
               <div className="p-8 sm:p-10 rounded-3xl bg-olive-50/80 border border-olive-200 text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-olive-100 border border-olive-300 text-olive-800 flex items-center justify-center mx-auto shadow-subtle">

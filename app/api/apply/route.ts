@@ -1,28 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import sgMail from "@sendgrid/mail";
 import {
   generateAgencyEmail,
   generateApplicantEmail,
   ApplicationEmailData,
 } from "@/lib/email/templates";
 
+export const runtime = "nodejs";
+
 // Server-controlled agent code to destination email mapping (loaded from environment variables)
 const AGENT_EMAIL_MAP: Record<string, string | undefined> = {
-  "Agent 01": process.env.AGENT_01_EMAIL,
-  "Agent 02": process.env.AGENT_02_EMAIL,
-  "Agent 03": process.env.AGENT_03_EMAIL,
+  "Agent 01": process.env.AGENT_01_EMAIL?.trim(),
+  "Agent 02": process.env.AGENT_02_EMAIL?.trim(),
+  "Agent 03": process.env.AGENT_03_EMAIL?.trim(),
 };
 
-const CENTRAL_KEYBRIDGE_EMAIL = process.env.CENTRAL_KEYBRIDGE_EMAIL;
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const RESEND_FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL || "Keybridge Residential <onboarding@resend.dev>";
+const CENTRAL_KEYBRIDGE_EMAIL = process.env.CENTRAL_KEYBRIDGE_EMAIL?.trim();
+const FROM_EMAIL = process.env.FROM_EMAIL?.trim();
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY?.trim();
+
+function logEmailFailure(kind: string, referenceId: string, error: unknown) {
+  const details = error as {
+    message?: string;
+    code?: string | number;
+    response?: { body?: { errors?: unknown } };
+  } | null;
+  // Log provider diagnostics without serializing request headers or the API key.
+  console.error(`[SENDGRID ERROR] ${kind}: reference=${referenceId}`, {
+    message: details?.message || "Email dispatch failed.",
+    code: details?.code,
+    errors: details?.response?.body?.errors,
+  });
+}
 
 export async function POST(req: NextRequest) {
   try {
     let body: any;
     try {
       body = await req.json();
+      if (!body || typeof body !== "object" || Array.isArray(body)) {
+        throw new Error("Expected a JSON object.");
+      }
     } catch {
       return NextResponse.json(
         {
@@ -48,12 +66,12 @@ export async function POST(req: NextRequest) {
     const agentCode = typeof body.agentCode === "string" ? body.agentCode.trim() : "";
     if (!agentCode) {
       errors.agentCode = "Please select your assigned agent.";
-    } else if (!(agentCode in AGENT_EMAIL_MAP)) {
+    } else if (!Object.prototype.hasOwnProperty.call(AGENT_EMAIL_MAP, agentCode)) {
       errors.agentCode = "Invalid or unrecognized agent code.";
     }
 
     const destinationEmail = AGENT_EMAIL_MAP[agentCode];
-    if (!errors.agentCode && !destinationEmail) {
+    if (!errors.agentCode && (!destinationEmail || !emailRegex.test(destinationEmail))) {
       console.error(
         `[CRITICAL] No destination email configured for assigned agent: "${agentCode}". Check AGENT_XX_EMAIL in .env.local.`
       );
@@ -170,6 +188,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // A submission can only succeed when email sending is configured.
+    if (
+      !FROM_EMAIL || !emailRegex.test(FROM_EMAIL) ||
+      !SENDGRID_API_KEY?.startsWith("SG.") ||
+      /placeholder|your_.*key/i.test(SENDGRID_API_KEY) ||
+      !CENTRAL_KEYBRIDGE_EMAIL || !emailRegex.test(CENTRAL_KEYBRIDGE_EMAIL)
+    ) {
+      console.error("[EMAIL CONFIGURATION] Check FROM_EMAIL, SENDGRID_API_KEY, and CENTRAL_KEYBRIDGE_EMAIL before accepting applications.");
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Application submission is temporarily unavailable. Please contact your agent or try again later.",
+        },
+        { status: 503 }
+      );
+    }
+
     // 3. Authoritative Reference ID generation
     const referenceId = `KB-${yyyy}-${Math.floor(100000 + Math.random() * 900000)}`;
     const submissionTime = new Date().toUTCString();
@@ -180,7 +215,7 @@ export async function POST(req: NextRequest) {
       otherPropertyType: body.otherPropertyType,
       firstName: body.firstName,
       lastName: body.lastName,
-      email: body.email,
+      email: body.email.trim(),
       phone: body.phone,
       maritalStatus: body.maritalStatus,
       currentStreetAddress: body.currentStreetAddress,
@@ -205,82 +240,63 @@ export async function POST(req: NextRequest) {
     const agencyEmail = generateAgencyEmail(emailData, referenceId, submissionTime);
     const applicantEmail = generateApplicantEmail(emailData, referenceId, submissionTime);
 
-    // 5. Transactional Email Dispatch via Resend
-    const isLiveApiKey =
-      Boolean(RESEND_API_KEY) &&
-      !RESEND_API_KEY?.includes("placeholder") &&
-      !RESEND_API_KEY?.includes("your_api_key");
+    // 5. SendGrid must accept the agent notification before confirming a submission.
+    sgMail.setApiKey(SENDGRID_API_KEY);
+    const from = { name: "Keybridge Residential", email: FROM_EMAIL };
+    try {
+      const [agencyDispatch] = await sgMail.send({
+        from,
+        to: [destinationEmail!],
+        cc: [CENTRAL_KEYBRIDGE_EMAIL],
+        subject: agencyEmail.subject,
+        html: agencyEmail.html,
+        text: agencyEmail.text,
+      });
 
-    if (isLiveApiKey && destinationEmail) {
-      try {
-        const resend = new Resend(RESEND_API_KEY);
-
-        // Send both Agency and Applicant confirmation emails concurrently
-        const [agencyDispatch, applicantDispatch] = await Promise.all([
-          resend.emails.send({
-            from: RESEND_FROM_EMAIL,
-            to: [destinationEmail],
-            cc: CENTRAL_KEYBRIDGE_EMAIL ? [CENTRAL_KEYBRIDGE_EMAIL] : undefined,
-            subject: agencyEmail.subject,
-            html: agencyEmail.html,
-            text: agencyEmail.text,
-          }),
-          resend.emails.send({
-            from: RESEND_FROM_EMAIL,
-            to: [emailData.email],
-            subject: applicantEmail.subject,
-            html: applicantEmail.html,
-            text: applicantEmail.text,
-          }),
-        ]);
-
-        if (agencyDispatch.error) {
-          console.error("[RESEND ERROR] Agency notification failed:", agencyDispatch.error);
-        }
-        if (applicantDispatch.error) {
-          console.error("[RESEND ERROR] Applicant confirmation failed:", applicantDispatch.error);
-        }
-
-        // If agency dispatch failed critically, report error
-        if (agencyDispatch.error && applicantDispatch.error) {
-          throw new Error(
-            agencyDispatch.error.message || "Resend email delivery failure"
-          );
-        }
-
-        console.log(`[RESEND SUCCESS] Dispatched emails for reference: ${referenceId}`);
-      } catch (dispatchError: any) {
-        console.error("[RESEND DISPATCH FAILURE]:", dispatchError);
-        return NextResponse.json(
-          {
-            success: false,
-            message:
-              "Your application was received, but an error occurred while transmitting notification emails to your agent. Please check your connection and try submitting again.",
-            referenceId,
-          },
-          { status: 502 }
-        );
+      if (agencyDispatch.statusCode !== 202) {
+        throw new Error(`SendGrid did not accept the agent notification (status ${agencyDispatch.statusCode}).`);
       }
-    } else {
-      // Diagnostic / Development Logging when placeholder key is used
-      console.log("===============================================================================");
-      console.log("               RESEND EMAIL DISPATCH (DIAGNOSTIC / DEV MODE)                   ");
-      console.log("===============================================================================");
-      console.log(`Notice: RESEND_API_KEY is unset or placeholder. Emails formatted & logged below.`);
-      console.log("-------------------------------------------------------------------------------");
-      console.log("1. AGENCY NOTIFICATION EMAIL:");
-      console.log(`   To (Agent):     ${destinationEmail}`);
-      console.log(`   CC (Central):   ${CENTRAL_KEYBRIDGE_EMAIL}`);
-      console.log(`   Subject:        ${agencyEmail.subject}`);
-      console.log(`   From:           ${RESEND_FROM_EMAIL}`);
-      console.log("-------------------------------------------------------------------------------");
-      console.log("2. APPLICANT CONFIRMATION EMAIL:");
-      console.log(`   To (Applicant): ${emailData.email}`);
-      console.log(`   Subject:        ${applicantEmail.subject}`);
-      console.log(`   From:           ${RESEND_FROM_EMAIL}`);
-      console.log("-------------------------------------------------------------------------------");
-      console.log(`REFERENCE ID:      ${referenceId}`);
-      console.log("===============================================================================");
+
+      console.info(`[SENDGRID ACCEPTED] Agent notification: reference=${referenceId} emailId=${agencyDispatch.headers["x-message-id"] || "unavailable"}`);
+    } catch (dispatchError) {
+      logEmailFailure("Agent notification failed", referenceId, dispatchError);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "We could not confirm that your application was sent to your agent. Please try again later or contact your agent.",
+          referenceId,
+        },
+        { status: 502 }
+      );
+    }
+
+    // Keep the existing error state for confirmation failures too.
+    try {
+      const [applicantDispatch] = await sgMail.send({
+        from,
+        to: [emailData.email],
+        subject: applicantEmail.subject,
+        html: applicantEmail.html,
+        text: applicantEmail.text,
+      });
+
+      if (applicantDispatch.statusCode !== 202) {
+        throw new Error(`SendGrid did not accept the applicant confirmation (status ${applicantDispatch.statusCode}).`);
+      }
+
+      console.info(`[SENDGRID ACCEPTED] Applicant confirmation: reference=${referenceId} emailId=${applicantDispatch.headers["x-message-id"] || "unavailable"}`);
+    } catch (dispatchError) {
+      logEmailFailure("Applicant confirmation failed", referenceId, dispatchError);
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Your application was sent to your agent, but your confirmation email could not be sent. Please keep reference ${referenceId} and contact your agent; you do not need to submit again.`,
+          referenceId,
+          centralCopySent: true,
+          confirmationEmailSent: false,
+        },
+        { status: 502 }
+      );
     }
 
     // 6. Response: Confirm receipt and return authoritative referenceId
@@ -289,7 +305,9 @@ export async function POST(req: NextRequest) {
       {
         success: true,
         referenceId,
-        message: "Application successfully received and confirmation emails dispatched.",
+        centralCopySent: true,
+        confirmationEmailSent: true,
+        message: "Application submitted successfully. Your agent notification and confirmation email have been accepted for sending.",
       },
       { status: 201 }
     );
