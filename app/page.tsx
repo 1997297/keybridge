@@ -1,6 +1,6 @@
 import React from "react";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
+import { Header } from "@/app/_components/site-header";
+import { Footer } from "@/app/_components/site-footer";
 import { Hero } from "@/components/home/hero";
 import { About } from "@/components/home/about";
 import { Services } from "@/components/home/services";
